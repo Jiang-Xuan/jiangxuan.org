@@ -45,7 +45,7 @@ fs.readdirSync(rootPath).map(function(item) {
   }
 })
 
-console.log(entry)
+// ---
 
 var config = {
   entry: {
@@ -124,7 +124,7 @@ HtmlWebpackPlugin2.prototype.injectAssetsIntoAssetTags = function(assetTags) {
   return assetTags
 };
 
-//打包的时候把静态资源打包进去
+//打包的时候把静态资源打包进去 
 Object.keys(entry).map(function(key){
   if( fs.existsSync( path.resolve(rootPath, `${key}.html`) )){
     console.log(`ADD entry ${key}.html`);
@@ -170,20 +170,8 @@ if(dev_environment){
   config.plugins.push(new webpack.NoErrorsPlugin({"process.env.NODE_ENV":"development"}))
 }   
 
-console.log(config)
 
 module.exports = config;
-
-
-
-
-
-
-
-
-
-
-
 
 
 

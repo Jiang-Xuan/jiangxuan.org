@@ -7,7 +7,6 @@ function HtmlWebpackPlugin2(options){
   this.variable = options.variable;
   HtmlWebpackPlugin.apply(this,arguments);
 }
-
 HtmlWebpackPlugin2.prototype = new HtmlWebpackPlugin();
 
 HtmlWebpackPlugin2.prototype.injectAssetsIntoAssetTags = function(assetTags){

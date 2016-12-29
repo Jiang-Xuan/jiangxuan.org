@@ -13,8 +13,6 @@ Object.keys(config.entry).map(function(item) {
   )
 })
 
-console.log(config)
-
 var compiler = webpack(config)
 
 var server = new WebpackDevServer(compiler, {
