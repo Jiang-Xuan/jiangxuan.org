@@ -16,7 +16,7 @@ class App extends React.Component {
     let Page = this.page;
     
     if(Page){
-      return <div> 
+      return <div>  
         <Page />
       </div>
     }else{
