@@ -9,6 +9,7 @@ export default class Privacy extends SmartBlockComponent {
 
 	componentDidMount() {
 		UserCenter.getLawInfo(this.unionId)
+		 .subscribe(this)
 	}
 
 	onSuccess(result) {
