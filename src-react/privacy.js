@@ -17,8 +17,6 @@ export default class Privacy extends SmartBlockComponent {
 
 	onSuccess(result) {
 		this.setState({
-			loading: false, 
-			success: true,
 			privateNotes: result.data.privateNotes,
 		})
 	}
