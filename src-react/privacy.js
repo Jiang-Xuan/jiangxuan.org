@@ -1,11 +1,6 @@
 'use strict'
 
 import React from 'react'
-import util from './lib/util'
-import {SmartBlockComponent} from './BaseComponent/index'
-import UserCenter from './module/UserCenter'
-
-import './about.less'
 
 export default class Privacy extends SmartBlockComponent {
 	constructor(props) {
@@ -22,7 +17,7 @@ export default class Privacy extends SmartBlockComponent {
 
 	onSuccess(result) {
 		this.setState({
-			loading: false,
+			loading: false, 
 			success: true,
 			privateNotes: result.data.privateNotes,
 		})

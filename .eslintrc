@@ -1,6 +1,6 @@
 {
-  "extends": "eslint:recommended",
+  "extends": "airbnb",
   "rules": {
-    "no-console": 1
+    "comma-dangle": ["error", "never"]
   }
 }
