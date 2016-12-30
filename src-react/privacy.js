@@ -5,6 +5,7 @@ import React from 'react'
 export default class Privacy extends SmartBlockComponent {
 	constructor(props) {
 		super(props)
+		let query = util.query()
 		this.unionId = query.unionId
 	}
 
