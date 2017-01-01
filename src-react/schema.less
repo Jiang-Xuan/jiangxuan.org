@@ -1,0 +1,178 @@
+body {
+  background-color: black;
+  color: white;
+  font-family: impact;
+}
+.container header nav{
+  display: block;
+  padding: 1em 2em;
+  font-size: 4em;
+  a.left {
+    float: left;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    background-image: linear-gradient(135deg, hsl(50, 100%, 70%), hsl(320, 100%, 50%));
+    text-decoration: none;
+  }
+  a.right {
+    float: right;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    background-image: linear-gradient(-135deg, hsl(50, 100%, 70%), hsl(320, 100%, 50%));
+    text-decoration: none;
+  }
+}
+.container main {
+  padding: 4em 10em;
+  section {
+    background-color: #062529;
+    border-radius: 2px;
+    padding: 1em;
+    .title {
+      text-align: center;
+    }
+  }
+  h1 {
+    text-align: center;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    background-image: url(../source/image1.jpg);
+    background-size: cover;
+  }
+
+  .localDevEnv {
+    width: 33.33333%;
+    float: left;
+    position: relative;
+  }
+  .localDevEnv::before {
+    content: '';
+    position: absolute;
+    height: 100%;
+    top: 0;
+    right: 5px;
+    border-right: 1px solid #00ff03;
+  }
+  .gitServer {
+    width: 33.33333%;
+    float: left;
+    position: relative;
+  }
+  .gitServer::before {
+    content: '';
+    position: absolute;
+    height: 100%;
+    top: 0;
+    right: 5px;
+    border-right: 1px solid #00ff03;
+  }
+  .aliyunServer {
+    width: 33.33333%;
+    float: left;
+  }
+}
+
+footer {
+  text-align: center;
+  padding: 4em 10em;
+}
+
+
+
+/*
+ * 全局类名 
+ */
+
+ .clear {
+   clear: both;
+ }
+ .center {
+  text-align: center;
+ }
+ .title {
+  color: antiquewhite;
+  margin-bottom: 5px;
+ }
+ .content {
+  color: navajowhite;
+ }
+ .dividor {
+  height: 0;
+  width: 100%;
+  border-bottom: 1px dashed #ccc;
+ }
+ p {
+  text-indent: 2em;
+ }
+iframe {
+  width: 100%;
+}
+code {
+  display: block;
+  background-color: #143f2d;
+  color: aqua;
+  text-indent: 2em;
+  padding: .4em 0;
+  position: relative;
+}
+code::before {
+  content: '';
+  display: block;
+  position: absolute;
+  right: 100%;
+  height: 100%;
+  top: 0;
+  background-color: #143f2d;
+}
+code::after {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 100%;
+  height: 100%;
+  top: 0;
+  background-color: #143f2d;
+}
+svg {
+  border: 1px solid #143f2d;
+  stroke: white;
+  font-family: "microsoft yahei"
+}
+svg polyline {
+  stroke-dasharray: 4,4;
+  fill: transparent;
+  animation: dashani 1s linear infinite;
+}
+svg text {
+  stroke: white;
+  fill: white;
+}
+
+@keyframes dashani {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -8;
+  }
+}
+
+// a 标签的初始化
+a:link {
+  color: red;
+}
+a:active {
+  color: green;
+}
+a:visited {
+  color: yellow;
+}
+
+
+
+
+
+
+
+
+

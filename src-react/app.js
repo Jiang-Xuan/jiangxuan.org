@@ -2,6 +2,7 @@
 import React from 'react'
 import {render} from 'react-dom'
 import About from './about'
+import Schema from './schema'
 
 class App extends React.Component {
   constructor(props) {
@@ -36,5 +37,6 @@ function register(pathname, page){
 
 // 关于我们
 register("/about.html", About)
+register("/schema.html", Schema)
 
 render(<App />, document.getElementById("root"));

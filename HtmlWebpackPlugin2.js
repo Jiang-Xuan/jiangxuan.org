@@ -1,3 +1,4 @@
+
 var HtmlWebpackPlugin = require("html-webpack-plugin")
 
 //扩展 HtmlWebpackPlugin 在插入js css之前可以自定义添加资源到html中

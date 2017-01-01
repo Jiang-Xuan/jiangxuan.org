@@ -75,6 +75,10 @@ var config = {
       {
         test: /\.(less|css)$/,
         loader: extractLess.extract(['css', 'less', 'postcss'])
+      },
+      {
+        test: /\.(jpe?g|png|gif|svg)$/i,
+        loader: 'url-loader?limit=8192'
       }
     ]
   },

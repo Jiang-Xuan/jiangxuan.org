@@ -1,12 +1,12 @@
-var webpack = require('webpack')
-var WebpackDevServer = require('webpack-dev-server')
+const webpack = require('webpack')
+const WebpackDevServer = require('webpack-dev-server')
 
-var config = require('./webpack.config.js')
+const config = require('./webpack.config.js')
 
 const PORT = 10000
 const HOSTS = '127.0.0.1'
 
-Object.keys(config.entry).map(function(item) {
+Object.keys(config.entry).map(function (item) {
   config.entry[item].unshift(
     `webpack-dev-server/client?http://${HOSTS}:${PORT}`,
     'webpack/hot/dev-server'
