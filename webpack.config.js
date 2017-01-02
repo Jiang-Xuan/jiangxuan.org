@@ -9,6 +9,7 @@ var HtmlWebpackPlugin2 = require('./HtmlWebpackPlugin2')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 // var dllConfig = require('./webpack.config.dll')
 var path = require('path')
+var customMDtoHTML = require('./customMDtoHTML')
 
 var evnironment = process.env.NODE_ENV || 'dev'
 
@@ -154,6 +155,27 @@ Object.keys(entry).map(function(key){
     )
   }
 });
+
+// -----------------markdown-------------
+// 设置md文档路径
+var mdPath = path.resolve(__dirname, 'md-article')
+var mdOutputPath = path.resolve(__dirname, 'build/md')
+// 读取markdown入口文件
+var mdEntry = {}
+fs.readdirSync(mdPath).map(function(item) {
+  if(/\.md$/.test(item)) {
+    mdEntry[item.replace('.md', '')] = `${mdPath}/${item}`
+  }
+})
+Object.keys(mdEntry).map(function(item) {
+  config.plugins.push(
+    new customMDtoHTML({
+      MD: `./md-article/${item}.md`,
+      template: path.resolve(mdPath, 'template.html'),
+      fileoutput: './md/' + item + '.html'
+    })
+  )
+})
 
 //线上打包需要压缩代码
 if(dist_environment){

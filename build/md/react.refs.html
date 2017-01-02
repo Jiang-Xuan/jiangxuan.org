@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>关于在react中refs是string类型的弃用</title>
+  <link rel="stylesheet" href="./prism.css">
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      font-family: impact;
+    }
+    p {
+      text-indent: 2em;
+    }
+    .container header nav {
+      display: block;
+      padding: 1em 2em;
+      font-size: 4em;
+    }
+    .container header nav a.left {
+      float: left;
+      -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text;
+      background-image: linear-gradient(135deg, #ffe566, #ff00aa);
+      text-decoration: none;
+    }
+    .container header nav a.right {
+      float: right;
+      -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text;
+      background-image: linear-gradient(-135deg, #ffe566, #ff00aa);
+      text-decoration: none;
+    }
+    .container main {
+      padding: 4em 10em;
+    }
+    .container main section{
+      background-color: #062529;
+      padding-top: 0.1px;
+    }
+    .container main h1 {
+      text-align: center;
+    }
+    /* code样式 */
+    code {
+      padding: 2px 4px;
+      font-size: 90%;
+      color: #c7254e;
+      background-color: #f9f2f4;
+      border-radius: 4px;
+      font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
+    }
+    pre code {
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="root" class="container">
+    <header>
+      <nav>
+        <a href="#" class="left">Home</a>
+        <a href="https://github.com/Jiang-Xuan" target="_blank" class="right">Github</a>
+      </nav>
+    </header>
+    <main>
+      <h1>关于在react中refs是string类型的弃用</h1>
+      <section>
+        
+<ul>
+<li>在eslint中已经对于在<code>refs</code>使用字符串类型的代码进行报错</li>
+</ul>
+<p>正确的获取<code>DOM</code>应该使用以下代码： </p>
+<pre class="language-js"><code>  var Hello = React.createClass({
+        componentDidMount: function() {
+          var component = this.hello;
+          // ...do something with component
+        },
+        render() {
+          return &lt;div ref={(c) =&gt; { this.hello = c; }}&gt;Hello, world.&lt;/div&gt;;
+        }
+});
+</code></pre><p>在ref中使用箭头函数的方式来获取<code>DOM</code>，箭头函数的参数<code>c</code>由<code>react</code>负责传入，<code>c</code>就是原生<code>DOM</code>。</p>
+<p>下面的代码将被弃用：</p>
+<pre class="language-js"><code>  var Hello = React.createClass({
+       render: function() {
+            return &lt;div ref=&quot;hello&quot;&gt;Hello, world.&lt;/div&gt;;
+       }
+  });
+
+
+  var Hello = React.createClass({
+        componentDidMount: function() {
+              var component = this.refs.hello;
+          // ...do something with component
+        },
+        render: function() {
+          return &lt;div ref=&quot;hello&quot;&gt;Hello, world.&lt;/div&gt;;
+        }
+  });
+</code></pre>
+      </section>
+    </main>
+  </div>
+  <script src="./prism.js"></script>
+</body>
+</html>
