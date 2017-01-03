@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>自动化从github仓库部署到服务器</title>
+  <link rel="stylesheet" href="./prism.css">
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      font-family: impact;
+    }
+    p {
+      text-indent: 2em;
+    }
+    li p {
+      text-indent: 0;
+    }
+    .container header nav {
+      display: block;
+      padding: 1em 2em;
+      font-size: 4em;
+    }
+    .container header nav a.left {
+      float: left;
+      -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text;
+      background-image: linear-gradient(135deg, #ffe566, #ff00aa);
+      text-decoration: none;
+    }
+    .container header nav a.right {
+      float: right;
+      -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text;
+      background-image: linear-gradient(-135deg, #ffe566, #ff00aa);
+      text-decoration: none;
+    }
+    .container main {
+      padding: 4em 10em;
+    }
+    .container main section{
+      background-color: #062529;
+      padding-top: 0.1px;
+    }
+    .container main h1 {
+      text-align: center;
+    }
+    h2 {
+      padding: 0 10px;
+    }
+    /* code样式 */
+    code {
+      padding: 2px 4px;
+      font-size: 90%;
+      color: #c7254e;
+      background-color: #f9f2f4;
+      border-radius: 4px;
+      font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
+    }
+    pre code {
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="root" class="container">
+    <header>
+      <nav>
+        <a href="#" class="left">Home</a>
+        <a href="https://github.com/Jiang-Xuan" target="_blank" class="right">Github</a>
+      </nav>
+    </header>
+    <main>
+      <h1>自动化从github仓库部署到服务器</h1>
+      <section>
+        
+<h2 id="-webhook-github-push-post-">利用webhook来让自己的github仓库收到push请求的时候向自己的服务器发送post请求来实现自动化</h2>
+<p>利用git开发有三个区域很重要：</p>
+<ul>
+<li>本地开发用的git仓库</li>
+<li>远程git仓库(我用的github)</li>
+<li>服务器上的代码</li>
+</ul>
+<p>如果本地一个功能开发测试完毕，我们就会推送到git远程仓库，推送成功之后如果不去服务器上面<code>git pull</code>一下，远程仓库的代码永远也不会更新。如果推送的频率比较高，没回都去服务器上面拉取代码是比较烦人的。所以<code>git</code>代码托管平台都会提供一个钩子<code>webhook</code>，利用这个钩子我们可以实现自动化。</p>
+<p>以下以github代码托管平台为例子：</p>
+<ol>
+<li>登录github代码托管平台&lt; <a href="https://github.com">https://github.com</a> &gt;</li>
+<li>选择你想要实现自动化的git仓库</li>
+<li>在<code>star</code>下面会有一个<code>Settings</code>，点进去</li>
+<li>在左侧导航栏你会看到有一个<code>Webhooks</code>标签，点进去</li>
+</ol>
+<blockquote>
+<p>Webhooks allow external services to be notified when certain events happen within your repository. When the specified events happen, we’ll send a POST request to each of the URLs you provide. Learn more in our <a href="https://developer.github.com/webhooks/">Webhooks Guide</a>.</p>
+</blockquote>
+<p>大概意思如下：</p>
+<blockquote>
+<p>Webhooks允许外部的服务接收一个提示当你的仓库发生了某一个事件，当指定的事件发生了，我们就会发送一个POST请求到你提供的所有URL去，学习更多我们的<a href="https://developer.github.com/webhooks/">Webhooks Guide</a></p>
+</blockquote>
+<ul>
+<li><p>现在我们开始搭建这个接收webhook的post请求的服务器，基于<code>node.js</code></p>
+</li>
+<li><p>首先你要连接到自己的服务器，新建一个文件夹，比如<code>deploy</code></p>
+</li>
+<li>然后用<code>npm install github-webhook-handler</code>安装我们使用的模块</li>
+<li><code>vim deploy.js</code>新建启动的js文件</li>
+<li>键入以下代码</li>
+</ul>
+<pre class="language-js"><code>    var http = require(&#39;http&#39;)
+    var createHandler = require(&#39;github-webhook-handler&#39;)
+    var child_process = require(&#39;child_process&#39;)
+    var fs = require(&#39;fs&#39;)
+    var PORT = ** // 填写端口 `Number`类型
+    var HOSTNAME = ** // 填写IP地址 `String`类型
+    var handler = createHandler({
+        path:&#39;/&#39;,// 想要的地址，我这里直接用了根
+        secret: &#39;******&#39;// 这里填写你新建webhook时填的秘钥
+    })
+
+    http.createServer(function(req, res) {
+        handler(req, res, function(err) {
+            res.statusCode = 404
+            res.end(&#39;no such location&#39;)
+        })
+    }).listen(PORT, HOSTNAME)
+
+    handler.on(&#39;push&#39;, function(event) {
+        /*
+         *用node.js提供的子进程来实现执行我们的sh文件来自动拉取代码
+         *如果自动部署的文件执行失败了，我们需要一个log文件来记录一下
+         *如果自动部署的文件执行成功了，让我们来打个时间标签记录一下，方便查看
+         *成功失败的log文件是一个文件
+         */
+        child_process.exec(&#39;source ./deploy.sh&#39;, function(err, stdout, stderr) {
+            if(err) {
+                var errorInfo = &#39;自动部署文件执行失败，失败信息为: \n&#39; + err + &#39;\n&#39;
+                fs.appendFileSync(&#39;./node.log&#39;, errorInfo, &#39;utf8&#39;, function(err) {
+                    console.log(err)
+                })
+            } else {
+                var nowStr = &#39;&#39;
+                var now = new Date()
+                nowStr = now.getFullYear() + &#39;年&#39; + (now.getMonth() + 1) + &#39;月&#39; + now.getDate() + &#39;日&#39; + now.getHours() + &#39;时&#39; + now.getMinutes() + &#39;分&#39; + now.getSeconds() + &#39;秒&#39; + &#39;: 自动部署文件执行成功&#39; + &#39;\n&#39;
+                fs.appendFileSync(&#39;./node.log&#39;, nowStr, &#39;utf8&#39;, function(err) {
+                    console.log(err)
+                })
+            }
+        })
+    })
+</code></pre>
+      </section>
+    </main>
+  </div>
+  <script src="./prism.js"></script>
+</body>
+</html>
