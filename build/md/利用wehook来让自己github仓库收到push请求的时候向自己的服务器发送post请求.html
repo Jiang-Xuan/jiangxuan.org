@@ -146,7 +146,32 @@
             }
         })
     })
-</code></pre>
+</code></pre><ol>
+<li>下面我们需要书写自己的<code>shell</code>脚本文件来真正的帮助我们来实现自动拉取git服务器上面的文件。</li>
+<li>目录下面新建一个脚本文件<code>vim deploy.sh</code></li>
+<li>键入以下代码</li>
+</ol>
+<pre class="language-js"><code>    #! /bin/bash
+    now=`date +%f`
+
+    echo $now &gt;&gt; &quot;./log/$now.log&quot; #我们需要详细的记录我们执行脚本的时间
+
+    echo &#39;::script start&#39; &gt;&gt; &quot;./log/$now.log&quot; #打印脚本开始标识，方便以后对此日志文件进行分析
+
+    cd ~/jiangxuan.org/ #切换到项目目录
+
+    git checkout master &gt;&gt; &quot;/root/jiangxuan.org.deploy/log/$now.log&quot; #切换到master分支
+
+    echo &#39;开始拉取代码&#39; &gt;&gt; &quot;~/jiangxuan.org.deploy/log/$now.log&quot;
+    git pull &gt;&gt; &quot;/root/jiangxuan.org.deploy/log/$now.log&quot; #从服务器进行拉取代码，并自动进行合并
+
+    git status &gt;&gt; &quot;/root/jiangxuan.org.deploy/log/$now.log&quot; #获取下git仓库状态
+
+    cp -af ./build ~/blog-product/ &gt;&gt; &quot;/root/jiangxuan.org.deploy/log/$now.log&quot; # 将项目的发布目录拷贝进入网站的访问目录
+
+    echo &#39;::script end&#39; &gt;&gt; &quot;/root/jiangxuan.org.deploy/log/$now.log&quot; #打印脚本结束标识
+</code></pre><h5 id="-qq-">搭建完毕，以上的代码都是根据我自己的网站搭建过程来的，如果你有任何疑问，都可以通过QQ邮箱联系我，知无不言！</h5>
+
       </section>
     </main>
   </div>
