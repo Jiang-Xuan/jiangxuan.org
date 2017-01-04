@@ -73,3 +73,31 @@
 			})
 		})
 
+
+5. 下面我们需要书写自己的`shell`脚本文件来真正的帮助我们来实现自动拉取git服务器上面的文件。
+6. 目录下面新建一个脚本文件`vim deploy.sh`
+7. 键入以下代码
+
+
+		#! /bin/bash
+		now=`date +%f`
+
+		echo $now >> "./log/$now.log" #我们需要详细的记录我们执行脚本的时间
+
+		echo '::script start' >> "./log/$now.log" #打印脚本开始标识，方便以后对此日志文件进行分析
+
+		cd ~/jiangxuan.org/ #切换到项目目录
+
+		git checkout master >> "/root/jiangxuan.org.deploy/log/$now.log" #切换到master分支
+
+		echo '开始拉取代码' >> "~/jiangxuan.org.deploy/log/$now.log"
+		git pull >> "/root/jiangxuan.org.deploy/log/$now.log" #从服务器进行拉取代码，并自动进行合并
+
+		git status >> "/root/jiangxuan.org.deploy/log/$now.log" #获取下git仓库状态
+
+		cp -af ./build ~/blog-product/ >> "/root/jiangxuan.org.deploy/log/$now.log" # 将项目的发布目录拷贝进入网站的访问目录
+
+		echo '::script end' >> "/root/jiangxuan.org.deploy/log/$now.log" #打印脚本结束标识
+
+
+##### 搭建完毕，以上的代码都是根据我自己的网站搭建过程来的，如果你有任何疑问，都可以通过QQ邮箱联系我，知无不言！
