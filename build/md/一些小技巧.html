@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>玩代码之如何自定义trminal提示符</title>
+  <link rel="stylesheet" href="./prism.css">
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      font-family: impact;
+    }
+    p {
+      text-indent: 2em;
+    }
+    li p {
+      text-indent: 0;
+    }
+    .container header nav {
+      display: block;
+      padding: 1em 2em;
+      font-size: 4em;
+    }
+    .container header nav a.left {
+      float: left;
+      -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text;
+      background-image: linear-gradient(135deg, #ffe566, #ff00aa);
+      text-decoration: none;
+    }
+    .container header nav a.right {
+      float: right;
+      -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text;
+      background-image: linear-gradient(-135deg, #ffe566, #ff00aa);
+      text-decoration: none;
+    }
+    .container main {
+      padding: 4em 10em;
+    }
+    .container main section{
+      background-color: #062529;
+      padding-top: 0.1px;
+    }
+    .container main h1 {
+      text-align: center;
+    }
+    h2 {
+      padding: 0 10px;
+    }
+    /* code样式 */
+    code {
+      padding: 2px 4px;
+      font-size: 90%;
+      color: #c7254e;
+      background-color: #f9f2f4;
+      border-radius: 4px;
+      font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
+    }
+    pre code {
+      padding: 0;
+    }
+    /* 引用样式 */
+    blockquote {
+      border-left: 5px solid #ccc;
+      padding: 10px 20px;
+      font-size: 17.5px;
+      font-family: "Helvetica Neue", Helvetica, 'Microsoft Yahei', 'Hiragino Sans GB', 'WenQuanYi Micro Hei', sans-serif;
+    }
+    blockquote p {
+      margin: 0;
+    }
+
+    /* a链接的样式 */
+    a {
+      color: #428bca;
+    }
+    /* footer */
+    footer {
+      padding: 4em 10em;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div id="root" class="container">
+    <header>
+      <nav>
+        <a href="#" class="left">Home</a>
+        <a href="https://github.com/Jiang-Xuan" target="_blank" class="right">Github</a>
+      </nav>
+    </header>
+    <main>
+      <h1>玩代码之如何自定义trminal提示符</h1>
+      <section>
+        
+<p>Linux的终端提示符分为四种：</p>
+<ol>
+<li>PS1 默认提示符，使用最多的，一般进入终端就是显示PS1,<code>jiangxuandeMBP:yuantu jiangxuan</code></li>
+<li>PS2 如果一个命令特别长，可以通过在末尾加“\”使其分行显示，PS2就是控制如何显示长命令换行提示符， 默认为<code>&gt;</code></li>
+<li>PS3 </li>
+<li>PS4 </li>
+</ol>
+<p>首先来自定义PS1</p>
+<ul>
+<li>进入<code>~</code>目录，<code>vim .bash_profile</code>，有该文件就直接编辑，没有就新建</li>
+<li>键入shell代码 <code>source ./.bash_rc</code>，保存退出</li>
+<li>现在<code>vim .bash_rc</code>，同样，有该文件就在之后编辑，没有新建</li>
+<li>键入<code>PS1=&#39;PS1&#39;</code>，保存退出，然后<code>source ./.bash_rc</code></li>
+<li>现在的提示符就变成了<code>PS1</code>字符</li>
+</ul>
+<p>自定义PS1来显示当前处于git的哪一个分支上面</p>
+<ul>
+<li><code>vim ~/.bash_rc</code></li>
+<li>键入以下代码</li>
+</ul>
+<pre class="language-js"><code>    function git_branch() {
+        # 执行git branch获取当前目录下面的git分支信息
+        # 我们并不要保存这些信息，所以投入Linux黑洞
+        # 然后用流编辑器sed来处理我们获取的信息
+        # -e选项表示我们会有多个命令处理该字符串
+        # &#39;/^[^*]/d&#39; 表示我们要删除开头不是*的行
+        # http://baiy.cn/utils/_regex_doc/index.htm 正则的资源
+        # &#39;s/* \(.*\)/ (\1)&#39; 替换模式，将整个字符串替换成正则匹配的子字符串
+        git branch 2&gt; /etc/null | sed -e &#39;/^[^*]/d&#39; -e &#39;s/* \(.*\)/ (\1)/&#39;
+    }
+    # 定义PS1的显示模式
+    # 系统预定义的一些变量
+    # \d ：代表日期，格式为 Weekday Month Date，例如 &quot;Mon Aug 1&quot;
+    # \H ：完整的主机名称。举例来说，鸟哥的练习机 linux.dmtsai.tw ，那么这个主机名称就是 linux.dmtsai.tw 
+    # \h ：仅取主机名称的第一个名字。以上述来讲，就是 linux 而已， .dmtsai.tw 被省略。
+    # \t ：显示时间，为 24 小时格式，如： HH:MM:SS
+    # \T ：显示时间，12 小时的时间格式！
+    # \A ：显示时间，24 小时格式， HH:MM
+    # \u ：目前使用者的账号名称
+    # \v ：BASH 的版本信息
+    # \w ：完整的工作目录名称。家目录会以 ~ 取代；
+    # \W ：利用 basename 取得工作目录名称，所以仅会列出最后一个目录名。
+    # \$ ：提示字符，如果是 root 时，提示字符为 # ，否则就是 $ 。
+    # $(function_name)来执行函数取得返回值，shell函数如果没有指定return 会以最后一条命令的执行结果为结果返回
+    # \e[31;1m和\[\e[0m\] 是用来设置中间的字符串的显示颜色
+    # 提示符有点长，我们想要在下一行进行输入，所以把PS1换个行
+    #
+    PS1=&#39;\h:\W \u \e[31;1m$(git_branch)\[\e[0m\]
+    $ &#39;
+</code></pre><ul>
+<li><code>source ~/.bash_rc</code></li>
+</ul>
+<p>以上代码涉及的资源：</p>
+<ol>
+<li><a href="#">sed流编辑器怎么使用</a></li>
+<li><a href="#">mac终端的显示效果</a></li>
+<li><a href="#">shell编程之函数</a></li>
+</ol>
+<p>如何用<code>terminal</code>来输出<code>utf-8</code>字符串？
+<a href="http://stackoverflow.com/questions/602912/how-do-you-echo-a-4-digit-unicode-character-in-bash">http://stackoverflow.com/questions/602912/how-do-you-echo-a-4-digit-unicode-character-in-bash</a></p>
+<p><strong>emoji官网</strong>
+<a href="http://www.iemoji.com/">http://www.iemoji.com/</a></p>
+
+      </section>
+    </main>
+    <footer>
+      <p>©️jiangxuan.org Contact me:645762213#qq.com(请把#换成@)</p>
+      <p>至此结束，如果有任何疑问，都可以发邮件给我，知无不言！</p>
+    </footer>
+  </div>
+  <script src="./prism.js"></script>
+</body>
+</html>

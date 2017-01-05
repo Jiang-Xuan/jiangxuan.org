@@ -98,6 +98,3 @@
 		cp -af ./build ~/blog-product/ >> "/root/jiangxuan.org.deploy/log/$now.log" # 将项目的发布目录拷贝进入网站的访问目录
 
 		echo '::script end' >> "/root/jiangxuan.org.deploy/log/$now.log" #打印脚本结束标识
-
-
-##### 搭建完毕，以上的代码都是根据我自己的网站搭建过程来的，如果你有任何疑问，都可以通过QQ邮箱联系我，知无不言！
