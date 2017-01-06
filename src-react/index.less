@@ -1,0 +1,348 @@
+// 初始化a链接的状态
+a:link {
+  text-decoration: none;
+}
+a:hover {
+  -webkit-text-fill-color: rgba(255, 255, 255, 0.9) 
+}
+a:active {
+  -webkit-text-fill-color: rgba(255, 255, 255, 0.9) 
+}
+a:visited {
+  -webkit-text-fill-color: rgba(255, 255, 255, 0.9) 
+}
+a {
+  transition: all 0.2s linear;
+}
+// 初始化a链接的状态 End
+
+body {
+  background-color: black;
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+}
+#welcome {
+  width: 100vw;
+  height: auto;
+  margin: auto;
+  text-align: center;
+}
+.box-with-text {
+  background-image: url(https://image.yuantutech.com/i4/26ade108eb51ae7e63c2e4e82a77806c-230-177.png);
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  font-size: 2em;
+}
+.box-with-text {
+  background-position: 50% 50%;
+  background-size: 80px 60px;
+  font: 4em/.85 impact;
+  animation: scratchy .253s linear forwards infinite;
+}
+
+@keyframes scratchy{
+  0% {
+    background-position: 0 0;
+  }
+  25% {
+    background-position: 0 0;
+  }
+  26% {
+    background-position: 20px -20px;
+  }
+  50% {
+    background-position: 20px -20px;
+  }
+  51% {
+    background-position: 40px -40px;
+  }
+  75% {
+    background-position: 40px -40px;
+  }
+  76% {
+    background-position: 60px -60px;
+  }
+  99% {
+    background-position: 60px -60px;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
+
+#home a:nth-child(1) {
+  margin-right: 10px;
+}
+#home a:nth-child(2) {
+  margin-left: 10px;
+}
+#picture {
+  margin: 20px auto;
+  width: 400px;/* 计算系数 width/height=1.428 */
+  height: 280.112px;
+  animation: waggle 6s linear infinite;
+}
+
+@keyframes waggle {
+  0% {
+    transfrom: translateY(0)
+  }
+  25% {
+    transform: translateY(20px)
+  }
+  50% {
+    transform: translateY(0)
+  }
+  75% {
+    transform: translateY(-20px)
+  }
+  100% {
+    transform: translateY(0)
+  }
+}
+
+/* 处理图片 红蜻蜓*/
+#picture {
+  position: relative;
+}
+#picture div {
+  width: 100%;
+  height: 100%;
+}
+#picture .shard-wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+#picture .shard-wrap .shard {
+  position: relative;
+}
+.shard {
+  transition: all .4s linear;
+}
+#picture .shard-wrap:nth-child(1) .shard {
+  background-color: #272729;
+  clip-path: polygon(16.8% 56.143%, 21.4% 54.143%, 19.1% 60%);
+  /*animation: shimme .5s linear infinite;*/
+  &::after {
+    clip-path: polygon(16.8% 56.143%, 21.4% 54.143%, 19.1% 60%);
+  }
+}
+
+#picture .shard-wrap .shard::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  /*animation: shimmer .8s linear infinite;*/
+}
+#picture .shard-wrap:nth-child(2) .shard {
+  background-color: #A72A34;
+  clip-path: polygon(21.4% 54.143%, 24.8% 60.143%, 19% 60%);
+}
+#picture .shard-wrap:nth-child(3) .shard {
+  background-color: #C4334A;
+  clip-path: polygon(21.4% 54.143%, 27.5% 54.857%, 24.7% 60.286%);
+}
+#picture .shard-wrap:nth-child(4) .shard {
+  background-color: #101F1F;
+  clip-path: polygon(24.7% 60.143%, 27.5% 54.9%, 29.4% 59.429%);
+}
+#picture .shard-wrap:nth-child(5) .shard {
+  background-color: #2C292D;
+  clip-path: polygon(27.4% 54.8%, 34.3% 59.6%, 29.3% 59.4%);
+}
+#picture .shard-wrap:nth-child(6) .shard {
+  background-color: #3C3A42;
+  clip-path: polygon(27.4% 54.857%, 32% 54.143%, 34.2% 59.8%);
+}
+#picture .shard-wrap:nth-child(7) .shard {
+  background-color: #272729;
+  clip-path: polygon(31.9% 54.143%, 37.8% 54.571%, 34.02% 59.6%);
+}
+#picture .shard-wrap:nth-child(8) .shard {
+  background-color: #BA223A;
+  clip-path: polygon(34% 59.571%, 37.6% 54.571%, 39.8% 58.857%);
+}
+#picture .shard-wrap:nth-child(9) .shard {
+  background-color: #C4304A;
+  clip-path: polygon(37.5% 54.571%, 43.9% 56.429%, 39.7% 58.857%);
+}
+#picture .shard-wrap:nth-child(10) .shard {
+  background-color: #DE4C63;
+  clip-path: polygon(37.5% 54.571%, 48% 54.714%, 43.5% 56.571%);
+}
+#picture .shard-wrap:nth-child(11) .shard {
+  background-color: #9A2A3C;
+  clip-path: polygon(39.7% 58.857%, 43.5% 56.429%, 47.5% 59.429%);
+}
+#picture .shard-wrap:nth-child(12) .shard {
+  background-color: #BB293A;
+  clip-path: polygon(43.4% 56.429%, 47.99% 54.714%, 50.4% 56.6%);
+}
+#picture .shard-wrap:nth-child(13) .shard {
+  background-color: #C52F49;
+  clip-path: polygon(43.4% 56.286%, 50.4% 56.429%, 47.4% 59.571%);
+}
+#picture .shard-wrap:nth-child(14) .shard {
+  background-color: #DE4C63;
+  clip-path: polygon(48% 54.714%, 56.1% 53.857%, 50.3% 56.571%);
+}
+#picture .shard-wrap:nth-child(15) .shard {
+  background-color: #8D233B;
+  clip-path: polygon(47.4% 59.429%, 50.3% 56.429%, 53.4% 58.714%);
+}
+#picture .shard-wrap:nth-child(16) .shard {
+  background-color: #BC2D40;
+  clip-path: polygon(50.3% 56.429%, 56.1% 53.857%, 53.4% 58.857%);
+}
+#picture .shard-wrap:nth-child(17) .shard {
+  background-color: #A72A34;
+  clip-path: polygon(53.3% 58.7%, 56% 54%, 60.3% 58.714%);
+}
+#picture .shard-wrap:nth-child(18) .shard {
+  background-color: #DE3C58;
+  clip-path: polygon(55.8% 54%, 64.3% 54.571%, 60.3% 58.714%);
+}
+#picture .shard-wrap:nth-child(19) .shard {
+  background-color: #181B1F;
+  clip-path: polygon(60.2% 58.714%, 64.2% 54.571%, 75.5% 59.2%);
+}
+#picture .shard-wrap:nth-child(20) .shard {
+  background-color: #45424B;
+  clip-path: polygon(64.3% 54.65%, 65.6% 51.429%, 77.5% 54%);
+}
+#picture .shard-wrap:nth-child(21) .shard {
+  background-color: #2D2C35;
+  clip-path: polygon(64% 54.6%, 78.3% 53.714%, 75.4% 59.26%);
+}
+#picture .shard-wrap:nth-child(22) .shard {
+  background-color: #262624;
+  clip-path: polygon(70.7% 59%, 71.5% 59.143%, 66.5% 71.143%);
+}
+#picture .shard-wrap:nth-child(23) .shard {
+  background-color: #333E4E;
+  clip-path: polygon(73.6% 59%, 74.9% 59.1%, 71.9% 68.714%);
+}
+#picture .shard-wrap:nth-child(24) .shard {
+  background-color: #1D2124;
+  clip-path: polygon(72.3% 67.429%, 79.4% 78.429%, 71.9% 68.857%);
+}
+#picture .shard-wrap:nth-child(25) .shard {
+  background-color: #812925;
+  clip-path: polygon(75.4% 56.286%, 76.4% 51.857%, 79.9% 54.143%);
+}
+#picture .shard-wrap:nth-child(26) .shard {
+  background-color: #3B0F13;
+  clip-path: polygon(75.4% 56.143%, 79.9% 54.143%, 78.4% 58.429%);
+}
+#picture .shard-wrap:nth-child(27) .shard {
+  background-color: #6D9B9F;
+  clip-path: polygon(38.6% 19%, 69.5% 53.714%, 41.5% 30.857%);
+}
+#picture .shard-wrap:nth-child(28) .shard {
+  background-color: #9ABFC2;
+  clip-path: polygon(57.4% 28.714%, 69.5% 53.857%, 62.4% 44.286%);
+}
+#picture .shard-wrap:nth-child(29) .shard {
+  background-color: #80B1B4;
+  clip-path: polygon(44.7% 29%, 51.5% 10%, 62.5% 44.429%);
+}
+#picture .shard-wrap:nth-child(30) .shard {
+  background-color: #9ABFC2;
+  clip-path: polygon(44.7% 29%, 40% 9.857%, 51.6% 10.143%);
+}
+#picture-wrap {
+  position: relative;
+  width: 400px;/* 计算系数 width/height=1.428 */
+  height: 280.112px;
+  margin: auto;
+}
+#picture-wrap .shadow {
+  position: absolute;
+  width: 55%;
+  left: 20%;
+  height: 3%;
+  bottom: 12.5%;
+  background-image: radial-gradient( closest-side, rgba(0, 0, 0, 0.35) 0, rgba(0, 0, 0, 0.14) 35%, transparent 100%);
+  animation: shadow-waggle 6s linear infinite;
+}
+/* 处理图片 红蜻蜓 End */
+@keyframes shadow-waggle {
+  0% {
+    transform: scaleX(1)
+  }
+  25% {
+    transform: scaleX(0.6)
+  }
+  75% {
+    transform: scaleX(1.2)
+  }
+  100% {
+    transform: scaleX(1)
+  }
+}
+
+// 闪亮动画
+@keyframes shimmer {
+  0% {
+    background-color: rgba(255,255,255,0);
+  }
+  35% {
+    background-color: rgba(255,255,255,0.2);
+  }
+  100% {
+    background-color: rgba(255, 255,255,0);
+  }
+}
+
+
+
+// two-state-two 需要运动的元素 序列号：[27, 28, 29, 30, ]
+
+.two-state-two {
+  .shard-wrap {
+    &:nth-child(27) {
+      .shard {
+        clip-path: polygon(31.6% 39%, 69.5% 53.714%, 41.5% 30.857%) !important;
+      }
+    }
+    &:nth-child(28) {
+      .shard {
+        clip-path: polygon(53.4% 40.714%, 69.5% 53.857%, 45.4% 42.286%) !important;
+      }
+    }
+    &:nth-child(29) {
+      .shard {
+        clip-path: polygon(42.7% 45%, 45.5% 30%, 55.5% 41.429%) !important;
+      }
+    }
+    &:nth-child(30) {
+      .shard {
+        clip-path: polygon(42.7% 45%, 34% 31.857%, 45.6% 30.143%) !important;
+      }
+    }
+  }
+}
+
+@supports (clip-path: polygon(0 0, 0 0, 0 0)) {
+  #svg-picture {
+    display: none;
+  }
+}
+
+@supports not (clip-path: polygon(0 0, 0 0, 0 0)) {
+  #picture-wrap {
+    display: none;
+  }
+  #svg-picture {
+    animation: waggle 6s linear infinite;
+    margin-top: 20px;
+  }
+}

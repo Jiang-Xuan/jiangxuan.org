@@ -70,6 +70,23 @@ body {
     width: 33.33333%;
     float: left;
   }
+  svg {
+    border: 1px solid #143f2d;
+    stroke: white;
+    font-family: "microsoft yahei"
+  }
+  svg polyline {
+    stroke-dasharray: 4,4;
+    fill: transparent;
+    animation: dashani 1s linear infinite;
+  }
+  svg text {
+    stroke: white;
+    fill: white;
+  }
+  p {
+   text-indent: 2em;
+  }
 }
 
 footer {
@@ -101,9 +118,7 @@ footer {
   width: 100%;
   border-bottom: 1px dashed #ccc;
  }
- p {
-  text-indent: 2em;
- }
+
 iframe {
   width: 100%;
 }
@@ -132,20 +147,6 @@ code::after {
   height: 100%;
   top: 0;
   background-color: #143f2d;
-}
-svg {
-  border: 1px solid #143f2d;
-  stroke: white;
-  font-family: "microsoft yahei"
-}
-svg polyline {
-  stroke-dasharray: 4,4;
-  fill: transparent;
-  animation: dashani 1s linear infinite;
-}
-svg text {
-  stroke: white;
-  fill: white;
 }
 
 @keyframes dashani {

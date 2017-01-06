@@ -3,6 +3,7 @@ import React from 'react'
 import {render} from 'react-dom'
 import About from './about'
 import Schema from './schema'
+import Home from './index.js'
 
 class App extends React.Component {
   constructor(props) {
@@ -12,6 +13,7 @@ class App extends React.Component {
     let pageName = pathname.match(/(\/[\w\-]+\.html$)/);
     pageName = pageName && pageName[1] ? pageName[1] : null;
     this.page = pageName ? pages[pageName] : null;
+    console.log(pageName)
   }
   render(){
     let Page = this.page;
@@ -38,5 +40,6 @@ function register(pathname, page){
 // 关于我们
 register("/about.html", About)
 register("/schema.html", Schema)
+register("/index.html", Home)
 
 render(<App />, document.getElementById("root"));
