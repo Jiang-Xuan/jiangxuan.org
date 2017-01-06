@@ -115,7 +115,7 @@
 <pre class="language-js"><code>    echo -e &quot;\xf0\x9f\x8d\x80&quot;
 </code></pre><p>结果为：</p>
 <pre class="language-js"><code>    jiangxuandeMBP:~ jiangxuan 
-    $echo -e &quot;\xf0\x9f\x8d\x80&quot;
+    $echo -e &quot;\xf0\x9f\x8d\x80&quot; # \x后面只能跟着两个十六进制的码值
     🍀
 </code></pre><p>如果我们可以复制一个特殊字符，但是想看一下这个字符的utf8编码是多少，可以使用：</p>
 <pre class="language-js"><code>    echo -n 🍀  | hexdump
@@ -128,6 +128,7 @@
 <p>也可以在一个网站上面进行查询，不过速度有点慢</p>
 <p><a href="https://unicode-table.com/cn/1F340/">https://unicode-table.com/cn/1F340/</a></p>
 <p>在页面下面的编码部分有utf8的hex码值。</p>
+<p>如果bash在4.0版本以及上，</p>
 
       </section>
     </main>
