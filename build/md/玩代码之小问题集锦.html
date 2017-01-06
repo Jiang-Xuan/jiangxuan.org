@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>各式各样的小问题</title>
+  <link rel="stylesheet" href="./prism.css">
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      font-family: impact;
+    }
+    p {
+      text-indent: 2em;
+    }
+    li p {
+      text-indent: 0;
+    }
+    .container header nav {
+      display: block;
+      padding: 1em 2em;
+      font-size: 4em;
+    }
+    .container header nav a.left {
+      float: left;
+      -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text;
+      background-image: linear-gradient(135deg, #ffe566, #ff00aa);
+      text-decoration: none;
+    }
+    .container header nav a.right {
+      float: right;
+      -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text;
+      background-image: linear-gradient(-135deg, #ffe566, #ff00aa);
+      text-decoration: none;
+    }
+    .container main {
+      padding: 4em 10em;
+    }
+    .container main section{
+      background-color: #062529;
+      padding-top: 0.1px;
+    }
+    .container main h1 {
+      text-align: center;
+    }
+    h2 {
+      padding: 0 10px;
+    }
+    /* code样式 */
+    code {
+      padding: 2px 4px;
+      font-size: 90%;
+      color: #c7254e;
+      background-color: #f9f2f4;
+      border-radius: 4px;
+      font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
+    }
+    pre code {
+      padding: 0;
+    }
+    /* 引用样式 */
+    blockquote {
+      border-left: 5px solid #ccc;
+      padding: 10px 20px;
+      font-size: 17.5px;
+      font-family: "Helvetica Neue", Helvetica, 'Microsoft Yahei', 'Hiragino Sans GB', 'WenQuanYi Micro Hei', sans-serif;
+    }
+    blockquote p {
+      margin: 0;
+    }
+
+    /* a链接的样式 */
+    a {
+      color: #428bca;
+    }
+    /* footer */
+    footer {
+      padding: 4em 10em;
+      text-align: center;
+    }
+    /* 
+     * 对于标题需要一些样式 一篇文章中只能有一个h1 
+     * 放在最上方 这个是强制要求，因为webpack插件在执行
+     * 的时候会将md文档最上面的h1替换到main标签的外面的h1
+     * 的标签中来显示，参见插件customMDtoHTML.js的源码
+     * h2不需要任何缩进来表示一个副层级，
+     * h3,h4,h5,h6都需要缩进来保持和p标签的对其
+     */
+    h3, h4, h5, h6 {
+      text-indent: 2em;
+    }
+  </style>
+</head>
+<body>
+  <div id="root" class="container">
+    <header>
+      <nav>
+        <a href="#" class="left">Home</a>
+        <a href="https://github.com/Jiang-Xuan" target="_blank" class="right">Github</a>
+      </nav>
+    </header>
+    <main>
+      <h1>各式各样的小问题</h1>
+      <section>
+        
+<h2 id="-shell-utf8-">如何在shell中输出一个utf8的特殊字符</h2>
+<p>先查看下自己的bash版本<code>bash --version</code>，下面是我的输出：</p>
+<pre class="language-js"><code>    jiangxuandeMBP:~ jiangxuan 
+    $bash --version
+    GNU bash, version 3.2.57(1)-release (x86_64-apple-darwin15)
+    Copyright (C) 2007 Free Software Foundation, Inc.
+</code></pre><p>3.*版本的需要这么在命令行中输出：</p>
+<pre class="language-js"><code>    echo -e &quot;\xf0\x9f\x8d\x80&quot;
+</code></pre><p>结果为：</p>
+<pre class="language-js"><code>    jiangxuandeMBP:~ jiangxuan 
+    $echo -e &quot;\xf0\x9f\x8d\x80&quot;
+    🍀
+</code></pre><p>如果我们可以复制一个特殊字符，但是想看一下这个字符的utf8编码是多少，可以使用：</p>
+<pre class="language-js"><code>    echo -n 🍀  | hexdump
+</code></pre><p>结果为：</p>
+<pre class="language-js"><code>    jiangxuandeMBP:~ jiangxuan 
+    $echo -n 🍀  | hexdump
+    0000000 f0 9f 8d 80                                    
+    0000004
+</code></pre><p>第一行的8个0后面的就是该字符的utf8编码。</p>
+<p>也可以在一个网站上面进行查询，不过速度有点慢</p>
+<p><a href="https://unicode-table.com/cn/1F340/">https://unicode-table.com/cn/1F340/</a></p>
+<p>在页面下面的编码部分有utf8的hex码值。</p>
+
+      </section>
+    </main>
+    <footer>
+      <p>©️jiangxuan.org Contact me:645762213#qq.com(请把#换成@)</p>
+      <p>至此结束，如果有任何疑问，都可以发邮件给我，知无不言！</p>
+      <p><a href="http://www.miitbeian.gov.cn/">苏ICP备16014895号-3</a></p>
+    </footer>
+  </div>
+  <script src="./prism.js"></script>
+</body>
+</html>
