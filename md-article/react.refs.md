@@ -2,6 +2,7 @@
 
 * 在eslint中已经对于在`refs`使用字符串类型的代码进行报错
 
+
 正确的获取`DOM`应该使用以下代码： 
 	
   	var Hello = React.createClass({
