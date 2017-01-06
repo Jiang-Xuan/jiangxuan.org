@@ -220,6 +220,4 @@ shell代码总不是写的都对，有时候我们需要对shell代码进行调�
 5. [shell语句之select](#)
 6. [shell语句之for](#)
 
-如何用`terminal`来输出`utf-8`字符串？
-<http://stackoverflow.com/questions/602912/how-do-you-echo-a-4-digit-unicode-character-in-bash>
 
