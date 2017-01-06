@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>玩代码之如何自定义trminal提示符</title>
+  <title>玩代码之如何自定义terminal提示符</title>
   <link rel="stylesheet" href="./prism.css">
   <style>
     body {
@@ -80,6 +80,17 @@
       padding: 4em 10em;
       text-align: center;
     }
+    /* 
+     * 对于标题需要一些样式 一篇文章中只能有一个h1 
+     * 放在最上方 这个是强制要求，因为webpack插件在执行
+     * 的时候会将md文档最上面的h1替换到main标签的外面的h1
+     * 的标签中来显示，参见插件customMDtoHTML.js的源码
+     * h2不需要任何缩进来表示一个副层级，
+     * h3,h4,h5,h6都需要缩进来保持和p标签的对其
+     */
+    h3, h4, h5, h6 {
+      text-indent: 2em;
+    }
   </style>
 </head>
 <body>
@@ -91,17 +102,17 @@
       </nav>
     </header>
     <main>
-      <h1>玩代码之如何自定义trminal提示符</h1>
+      <h1>玩代码之如何自定义terminal提示符</h1>
       <section>
         
 <p>Linux的终端提示符分为四种：</p>
 <ol>
-<li>PS1 默认提示符，使用最多的，一般进入终端就是显示PS1,<code>jiangxuandeMBP:yuantu jiangxuan</code></li>
-<li>PS2 如果一个命令特别长，可以通过在末尾加“\”使其分行显示，PS2就是控制如何显示长命令换行提示符， 默认为<code>&gt;</code></li>
-<li>PS3 </li>
-<li>PS4 </li>
+<li><a href="#-ps1">PS1</a> 默认提示符，使用最多的，一般进入终端就是显示PS1，<code>jiangxuandeMBP:yuantu jiangxuan</code></li>
+<li><a href="#-ps2">PS2</a> 如果一个命令特别长，可以通过在末尾加“\”使其分行显示，PS2就是控制如何显示长命令换行提示符， 默认为<code>&gt;</code></li>
+<li><a href="#ps3-bash-select-">PS3</a> 修改交互式命令select的提示符 </li>
+<li><a href="#ps4-shell-">PS4</a> 修改bash调试模式下的调试信息的输出</li>
 </ol>
-<p>首先来自定义PS1</p>
+<h2 id="-ps1">首先来自定义PS1</h2>
 <ul>
 <li>进入<code>~</code>目录，<code>vim .bash_profile</code>，有该文件就直接编辑，没有就新建</li>
 <li>键入shell代码 <code>source ./.bash_rc</code>，保存退出</li>
@@ -116,7 +127,7 @@
 </ul>
 <pre class="language-js"><code>    function git_branch() {
         # 执行git branch获取当前目录下面的git分支信息
-        # 我们并不要保存这些信息，所以投入Linux黑洞
+        # 如果出现错误信息，我们也不需要，所以投入Linux黑洞
         # 然后用流编辑器sed来处理我们获取的信息
         # -e选项表示我们会有多个命令处理该字符串
         # &#39;/^[^*]/d&#39; 表示我们要删除开头不是*的行
@@ -146,22 +157,131 @@
 </code></pre><ul>
 <li><code>source ~/.bash_rc</code></li>
 </ul>
-<p>以上代码涉及的资源：</p>
+<h3 id="-ps1">再个性化一点PS1</h3>
+<ul>
+<li><code>jiangxuandeMBP:jiangxuan.org jiangxuan 🍀  (master)</code></li>
+</ul>
+<p>想要显示彩色的字符，mac上面可以按快捷键<code>command + control + space</code>来调出emoji输入框，选择一个你喜欢的放在PS1中，我的是这样：</p>
+<ul>
+<li><code>git branch 2&gt; /dev/null | sed -e &#39;/^[^*]/d&#39; -e &#39;s/* \(.*\)/🍀  (\1)/&#39;</code></li>
+</ul>
+<p>还有一个emoji的网站可以复制emoji表情，当然输入法中也有。</p>
+<p><strong>爱emoji</strong>
+<a href="http://www.iemoji.com/">http://www.iemoji.com/</a></p>
+<h2 id="-ps2">再谈终端  PS2</h2>
+<p>当我们想要输入一个非常长的命令，我们可以分行输入，就像这样</p>
+<pre class="language-js"><code>    jiangxuandeMBP:jiangxuan.org jiangxuan$ git branch 2&gt; \
+    &gt; /dev/null \
+    &gt; sed -e &#39;/^[^*]/d&#39; \
+    &gt; -e &#39;s/* \(.*\)/🍀  (\1)/&#39;
+</code></pre><p>上面的<code>&gt;</code>就是PS2控制的字符，我们可以通过修改PS2来达到修改该提示符的目的，同样我们在<code>.bashrc</code>下面进行修改PS2，<code>vim ~/.bashrc</code>，在最后键入这样的代码：</p>
+<pre class="language-js"><code>    PS2=&#39;continue &gt;&#39;
+</code></pre><p>然后退出保存，然后<code>source ~/.bashrc</code>，接下来的效果就是这样的：</p>
+<pre class="language-js"><code>    jiangxuandeMBP:jiangxuan.org jiangxuan$ git branch 2&gt; \
+    continue &gt; /dev/null \
+    continue &gt; sed -e &#39;/^[^*]/d&#39; \
+    continue &gt; -e &#39;s/* \(.*\)/🍀  (\1)/&#39;
+</code></pre><h2 id="ps3-bash-select-">PS3用来修改bash的交互式命令select的提示符</h2>
+<p>select是bash中用来创建交互式的命令，让执行者来选择如何执行代码，例如这样的一段代码：</p>
+<pre class="language-js"><code>    select i in first second third fourth quit
+        do
+            case $i in
+                first) echo &#39;First&#39;;;
+                second) echo &#39;Second&#39;;;
+                third) echo &#39;Third&#39;;;
+                fourth) echo &#39;Fourth&#39;;;
+                quit) break;;
+            esac
+        done
+</code></pre><p>这样的代码输出是这样的：</p>
+<pre class="language-js"><code>    jiangxuandeMBP:~ jiangxuan 
+    $./test_ps3.sh # 注意写完改代码文件之后添加执行权限 chmod 777 ./test_ps3.sh
+    1) first
+    2) second
+    3) third
+    4) fourth
+    5) quit
+    #? # 这里就是PS3控制的地方，默认是 #？
+</code></pre><p>下面我们来修改PS3提示符：</p>
+<pre class="language-js"><code>    PS3=&#39;选择你想输出几？&#39;
+    select i in first second third fourth quit
+        do
+            case $i in
+                first) echo &#39;First&#39;;;
+                second) echo &#39;Second&#39;;;
+                third) echo &#39;Third&#39;;;
+                fourth) echo &#39;Fourth&#39;;;
+                quit) echo break;; # 用break来退出select，如果没有退出选项会一直让执行者选，可以用control + c来强制退出
+            esac
+        done
+</code></pre><p>上面的修改过的代码输出为：</p>
+<pre class="language-js"><code>    jiangxuandeMBP:~ jiangxuan 
+    $./test_ps3.sh 
+    1) first
+    2) second
+    3) third
+    4) fourth
+    5) quit
+    选择你想输出几？ # 看到了么，这里变了
+</code></pre><h2 id="ps4-shell-">PS4 调试shell代码的提示符</h2>
+<p>shell代码总不是写的都对，有时候我们需要对shell代码进行调试，来看下面的代码：</p>
+<pre class="language-js"><code>    #! /bin/bash
+    set -x # 这行非常重要，它表示将shell执行环境设置在调试环境下，代码执行的时候不仅会输出结果还会将你写的代码一块儿打印出来
+    for i in 1 2 3
+    do
+        echo $i
+    done
+    exit
+</code></pre><p>来看看输出：</p>
+<pre class="language-js"><code>    + for i in 1 2 3 # 将每次循环的代码都打印了出来 这个+号就是PS4控制的地方
+    + echo 1
+    1
+    + for i in 1 2 3
+    + echo 2
+    2
+    + for i in 1 2 3
+    + echo 3
+    3
+    + exit
+</code></pre><p>我们来进行修改，加上对PS4的赋值：</p>
+<pre class="language-js"><code>    #! /bin/bash
+    set -x # 同样，将执行环境置于调试环境下面
+    PS4=&#39;[${LINENO}]+&#39; # 我们一般需要知道代码在第几行执行
+    for i in 1 2 3
+    do
+        echo $i
+    done
+    exit
+</code></pre><p>来看看执行结果：</p>
+<pre class="language-js"><code>    + PS4=&#39;[${LINENO}]+&#39;
+    [5]+for i in 1 2 3
+    [7]+echo 1
+    1
+    [5]+for i in 1 2 3
+    [7]+echo 2
+    2
+    [5]+for i in 1 2 3
+    [7]+echo 3
+    3
+    [9]+exit
+</code></pre><p>以上代码涉及的资源：</p>
 <ol>
 <li><a href="#">sed流编辑器怎么使用</a></li>
 <li><a href="#">mac终端的显示效果</a></li>
 <li><a href="#">shell编程之函数</a></li>
+<li><a href="#">执行环境下的shell代码</a></li>
+<li><a href="#">shell语句之select</a></li>
+<li><a href="#">shell语句之for</a></li>
 </ol>
 <p>如何用<code>terminal</code>来输出<code>utf-8</code>字符串？
 <a href="http://stackoverflow.com/questions/602912/how-do-you-echo-a-4-digit-unicode-character-in-bash">http://stackoverflow.com/questions/602912/how-do-you-echo-a-4-digit-unicode-character-in-bash</a></p>
-<p><strong>emoji官网</strong>
-<a href="http://www.iemoji.com/">http://www.iemoji.com/</a></p>
 
       </section>
     </main>
     <footer>
       <p>©️jiangxuan.org Contact me:645762213#qq.com(请把#换成@)</p>
       <p>至此结束，如果有任何疑问，都可以发邮件给我，知无不言！</p>
+      <p><a href="http://www.miitbeian.gov.cn/">苏ICP备16014895号-3</a></p>
     </footer>
   </div>
   <script src="./prism.js"></script>

@@ -80,6 +80,17 @@
       padding: 4em 10em;
       text-align: center;
     }
+    /* 
+     * 对于标题需要一些样式 一篇文章中只能有一个h1 
+     * 放在最上方 这个是强制要求，因为webpack插件在执行
+     * 的时候会将md文档最上面的h1替换到main标签的外面的h1
+     * 的标签中来显示，参见插件customMDtoHTML.js的源码
+     * h2不需要任何缩进来表示一个副层级，
+     * h3,h4,h5,h6都需要缩进来保持和p标签的对其
+     */
+    h3, h4, h5, h6 {
+      text-indent: 2em;
+    }
   </style>
 </head>
 <body>
@@ -109,6 +120,7 @@
     <footer>
       <p>©️jiangxuan.org Contact me:645762213#qq.com(请把#换成@)</p>
       <p>至此结束，如果有任何疑问，都可以发邮件给我，知无不言！</p>
+      <p><a href="http://www.miitbeian.gov.cn/">苏ICP备16014895号-3</a></p>
     </footer>
   </div>
   <script src="./prism.js"></script>
