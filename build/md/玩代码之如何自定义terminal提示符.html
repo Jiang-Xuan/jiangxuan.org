@@ -28,7 +28,6 @@
     }
     a:visited {
       text-decoration: underline;
-      color: #2d4c66;
     }
     p {
       text-indent: 3rem;
@@ -37,6 +36,7 @@
     li p {
       text-indent: 0;
     }
+    /* 单独的code的padding值 */
     code {
       padding: 2px 4px;
       font-size: 90%;
@@ -44,6 +44,12 @@
       background-color: #f9f2f4;
       border-radius: 4px;
       font-family: Menlo,Monaco,Consolas,"Courier New",monospace;;
+    }
+    /* 大段的代码里面code不需要padding-left,padding-right */
+    /* 否则第一行的代码会有一点的代码错位 */
+    pre code {
+      padding-left: 0;
+      padding-right: 0;
     }
     /* code style END */
     /* code style END */
@@ -93,6 +99,7 @@
       }
       .container main section {
         background-color: #062529;
+        padding: .5rem;
       }
       .container footer {
         padding-left: 1rem;
@@ -141,6 +148,7 @@
       }
       .container main section {
         background-color: #062529;
+        padding: .5rem;
       }
       .container footer {
         padding: 4rem 12rem;
@@ -159,7 +167,7 @@
   <div id="root" class="container">
     <header>
       <nav>
-        <a href="#" class="left">Home</a>
+        <a href="http://jiangxuan.org/home.html" class="left">Home</a>
         <a href="https://github.com/Jiang-Xuan" target="_blank" class="right">Github</a>
       </nav>
     </header>

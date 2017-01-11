@@ -26,73 +26,73 @@ var extractLess = new ExtractTextPlugin('all.css')
 // 读取js文件作为入口
 var entry = {}
 fs.readdirSync(rootPath).map(function(item) {
-  if(/\.js$/.test(item)) {
-    entry[item.replace('.js', '')] = [rootPath + '/' + item]
-  }
+	if(/\.js$/.test(item)) {
+		entry[item.replace('.js', '')] = [rootPath + '/' + item]
+	}
 })
 
 // ---
 
 var config = {
-  entry: {
-    app: [`./${rootPath}/app.js`]
-  },
-  output: {
-    path: path.resolve(__dirname, distPath),
-    publicPath: "./",
-    filename: '[name].bundle.js'
-  },
-  module: {
-    loaders: [
-      {
-        test: /\.js$/,
-        exclude: path.resolve(__dirname, 'node_modules/'),
-        loader: 'babel',
-        query: {
-          presets: ['react', 'es2015', 'stage-1'],
-          plugins: ['transform-runtime'],
-          cacheDirectory: true
-        }
-      },
-      {
-        test: /\.ttf$/,
-        loader: 'file-loader'
-      },
-      {
-        test: /\.(less|css)$/,
-        loader: extractLess.extract(['css', 'less', 'postcss'])
-      },
-      {
-        test: /\.(jpe?g|png|gif|svg)$/i,
-        loader: 'url-loader?limit=8192'
-      }
-    ]
-  },
-  plugins: [
-    extractLess
-  ]
+	entry: {
+		app: [`./${rootPath}/app.js`]
+	},
+	output: {
+		path: path.resolve(__dirname, distPath),
+		publicPath: "./",
+		filename: '[name].bundle.js'
+	},
+	module: {
+		loaders: [
+			{
+				test: /\.js$/,
+				exclude: path.resolve(__dirname, 'node_modules/'),
+				loader: 'babel',
+				query: {
+					presets: ['react', 'es2015', 'stage-1'],
+					plugins: ['transform-runtime'],
+					cacheDirectory: true
+				}
+			},
+			{
+				test: /\.ttf$/,
+				loader: 'file-loader'
+			},
+			{
+				test: /\.(less|css)$/,
+				loader: extractLess.extract(['css', 'less', 'postcss'])
+			},
+			{
+				test: /\.(jpe?g|png|gif|svg)$/i,
+				loader: 'url-loader?limit=8192'
+			}
+		]
+	},
+	plugins: [
+		extractLess
+	]
 }
 
 //打包的时候把静态资源打包进去 
 Object.keys(entry).map(function(key){
-  if( fs.existsSync( path.resolve(rootPath, `${key}.html`) )){
-    console.log(`ADD entry ${key}.html`);
-    config.plugins.push(
-      new HtmlWebpackPlugin({
-          filename:path.resolve(distPath, `${key}.html`),
-          template:path.resolve(rootPath, `${key}.html`),
-          inject:true,
-          hash:false,
-          cache:true,
-          //要插入什么内容
-          chunks:['app'],
-          minify:{
-            removeComments:false,
-            collapseWhitespace:false
-          }
-      })
-    )
-  }
+	if( fs.existsSync( path.resolve(rootPath, `${key}.html`) )){
+		console.log(`ADD entry ${key}.html`);
+		config.plugins.push(
+			new HtmlWebpackPlugin({
+					filename:path.resolve(distPath, `${key}.html`),
+					template:path.resolve(rootPath, `${key}.html`),
+					inject:true,
+					hash:false,
+					cache:true,
+					//要插入什么内容
+					chunks:['app'],
+					minify:{
+						removeComments:false,
+						collapseWhitespace:false
+					}
+			})
+		)
+	}
 });
 
 // -----------------markdown-------------
@@ -102,37 +102,45 @@ var mdOutputPath = path.resolve(__dirname, 'build/md')
 // 读取markdown入口文件
 var mdEntry = {}
 fs.readdirSync(mdPath).map(function(item) {
-  if(/\.md$/.test(item)) {
-    mdEntry[item.replace('.md', '')] = `${mdPath}/${item}`
-  }
+	if(/[^(index)]\.md$/.test(item)) {
+		mdEntry[item.replace('.md', '')] = `${mdPath}/${item}`
+	}
 })
 Object.keys(mdEntry).map(function(item) {
-  config.plugins.push(
-    new customMDtoHTML({
-      MD: `./md-article/${item}.md`,
-      template: path.resolve(mdPath, 'template.html'),
-      fileoutput: './md/' + item + '.html'
-    })
-  )
+	config.plugins.push(
+		new customMDtoHTML({
+			MD: `./md-article/${item}.md`,
+			template: path.resolve(mdPath, 'template.html'),
+			fileoutput: './md/' + item + '.html'
+		})
+	)
 })
+// 单独生成index索引文件
+config.plugins.push(
+	new customMDtoHTML({
+		MD: './md-article/index.md',
+		template: path.resolve(mdPath, 'template.html'),
+		fileoutput: './home.html'
+	})
+)
 // -----------------markdown end-----------
 //线上打包需要压缩代码
 if(dist_environment){
-  config.plugins.unshift(
-      new webpack.optimize.UglifyJsPlugin({
-          compress: {
-              warnings: false
-          }
-      })
-    )
+	config.plugins.unshift(
+			new webpack.optimize.UglifyJsPlugin({
+					compress: {
+							warnings: false
+					}
+			})
+		)
 }
 
 /**
-  热加载需要的两个插件
+	热加载需要的两个插件
 */
 if(dev_environment){
-  config.plugins.push(new webpack.HotModuleReplacementPlugin())
-  config.plugins.push(new webpack.NoErrorsPlugin({"process.env.NODE_ENV":"development"}))
+	config.plugins.push(new webpack.HotModuleReplacementPlugin())
+	config.plugins.push(new webpack.NoErrorsPlugin({"process.env.NODE_ENV":"development"}))
 }   
 
 

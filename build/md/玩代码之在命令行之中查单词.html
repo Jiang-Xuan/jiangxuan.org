@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>玩代码之命令行来查单词</title>
+  <link rel="stylesheet" href="./prism.css">
+  <style>
+    :root {
+      font-size: 62.5%;
+    }
+    body {
+      margin: 0;
+      font-family: Arial,impact;
+      color: white;
+      background-color: black;
+    }
+    a {
+      color: #428bca;
+      text-decoration: none;
+    }
+    a:hover,
+    a:focus {
+      color:#2a6496;
+      text-decoration: underline;
+    }
+    a:focus {
+      outline: thin dotted;
+    }
+    a:visited {
+      text-decoration: underline;
+    }
+    p {
+      text-indent: 3rem;
+      word-break: break-all;
+    }
+    li p {
+      text-indent: 0;
+    }
+    /* 单独的code的padding值 */
+    code {
+      padding: 2px 4px;
+      font-size: 90%;
+      color: #c7254e;
+      background-color: #f9f2f4;
+      border-radius: 4px;
+      font-family: Menlo,Monaco,Consolas,"Courier New",monospace;;
+    }
+    /* 大段的代码里面code不需要padding-left,padding-right */
+    /* 否则第一行的代码会有一点的代码错位 */
+    pre code {
+      padding-left: 0;
+      padding-right: 0;
+    }
+    /* code style END */
+    /* code style END */
+
+    /* max-width: 768px */
+    @media all and (max-width: 992px) {
+      .container {
+        font-size: 1rem;
+      }
+      .container header {
+        width: 100%;
+        padding: 1rem;
+        font-size: 2rem;
+        line-height: 2.5rem;
+      }
+      .container header nav::after {
+        content: '';
+        display: block;
+        clear: both;
+      }
+      .container header nav {
+        font-family: impact;
+      }
+      .container header nav a:hover {
+        text-decoration: none;
+      }
+      .container header nav .left,
+      .container header nav .right {
+        -webkit-text-fill-color: transparent;
+        -webkit-background-clip: text;
+        background-image: linear-gradient(135deg, #ffe566, #f0a);
+      }
+      .container header nav .left {
+        float: left;
+      }
+      .container header nav .right {
+        float: right;
+      }
+      /* END */
+      .container main {
+        width: 100%;
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+      .container main h1 {
+        text-align: center;
+      }
+      .container main section {
+        background-color: #062529;
+        padding: .5rem;
+      }
+      .container footer {
+        padding-left: 1rem;
+        padding-right: 1rem;
+        text-align: center;
+      }
+    }
+    /* max-width: 768px END */
+
+    /* min-width: 768px */
+    /*@media (min-width: 768px) {
+      
+    }*/
+    /* min-width: 768px END */
+
+    /* min-width: 992px */
+    @media all and (min-width: 993px) {
+      .container {
+        font-size: 1.5rem;
+      }
+      .container header {
+        font-size: 6rem;
+        padding: 4rem 12rem;
+      }
+      .container header nav {
+        font-family: impact;
+      }
+      .container header nav .left,
+      .container header nav .right {
+        -webkit-text-fill-color: transparent;
+        -webkit-background-clip: text;
+        background-image: linear-gradient(135deg, #ffe566, #f0a)
+      }
+      .container header nav .left {
+        float: left;
+      }
+      .container header nav .right {
+        float: right;
+        background-image: linear-gradient(-135deg, #ffe566, #f0a)
+      }
+      .container main {
+        padding: 2rem 12rem;
+      }
+      .container main h1 {
+        text-align: center;
+      }
+      .container main section {
+        background-color: #062529;
+        padding: .5rem;
+      }
+      .container footer {
+        padding: 4rem 12rem;
+        text-align: center;
+      }
+    }
+    /* min-width: 992px END */
+
+    /* min-width: 1200px */
+    /*@media (min-width: 1200px) {
+    }*/
+    /* min-width: 1200px END */
+  </style>
+</head>
+<body>
+  <div id="root" class="container">
+    <header>
+      <nav>
+        <a href="http://jiangxuan.org/home.html" class="left">Home</a>
+        <a href="https://github.com/Jiang-Xuan" target="_blank" class="right">Github</a>
+      </nav>
+    </header>
+    <main>
+      <h1>玩代码之命令行来查单词</h1>
+      <section>
+        
+<p>英语水平不好我总是喜欢逛一些英文技术社区：</p>
+<ul>
+<li><a href="https://nodejs.org">node.js</a></li>
+<li><a href="http://stackoverflow.com">StackOverflow</a></li>
+<li><a href="https://developer.mozilla.org">MDN</a></li>
+</ul>
+<p>这些地方大多数的文章都是用英文来书写的，对于看翻译的文章来说，你不一定保证翻译的人能准确的理解作者的意图，即便是你英语不好，也要去阅读英文文档：</p>
+<ol>
+<li>可以提高自己的英文文档阅读能力</li>
+<li>即便当时不能理解作者的意图，当你使用到的时候会有一定的印象来回忆作者的意思</li>
+</ol>
+<p>不得不说，不懂英文阅读英文文档真的是一种受罪，一句话反复推敲好几遍也不一定能理解作者的意思。这时候有一个翻译软件来帮助自己理解还是很好地，就算翻译软件翻译出来的中国人外国人都看不懂，但是身为中国人对汉语有着独特的理解，所以还是有些帮助。但是对于翻译软件我却是有些不喜欢的，一个翻译软件这么多功能，我用不到，我也不要什么例句，什么对该单词的wiki解释，这样反而让我看这些东西的时候忘记了我就单纯的想查个单词。所以我喜欢用<a href="http://cn.bing.com">http://cn.bing.com</a>的在线翻译来查单词，但是重复的开网页，而且网页会占据我的整个屏幕，来回的切让我感觉很疲劳。既然bing返回是网页，用node来抓取网页分析里面我需要的东西，然后打印在控制台上面就好，为了更加方便，我使用的shell来更加的简化这个查单词过程。</p>
+<p>首先在家目录下面找到<code>.bashrc</code>文件，这个文件里面的<code>function</code>可以再控制台里面直接调用，<code>vim ~/.bashrc</code>，然后键入以下代码:</p>
+<pre class="language-js"><code>    functin trans() {
+        ~/shell/translation.sh
+    }
+</code></pre><p>我们不把翻译的逻辑放在该文件里面，因为该文件记录着用户的环境变量，所以我希望该文件简洁点。</p>
+<p><code>vim ~/shell/translation.sh</code></p>
+<pre class="language-js"><code>    # tip String 加载中的提示字符串
+    # a Function 抓取以及分析网页，返回有用的内容
+    tip=&quot;正在从bing.com搜索翻译，稍候....&quot;
+    function a(){
+        # 调用node来实现抓取网页，分析html结构来获取需要的内容
+        # $* 代表调用函数时传进来的所有参数
+        # 比如：a do you love me
+        # $* 就是 do you love me
+        # 将所有的传进来的参数原样传给node
+        node ~/shell/app.js $*
+    }
+    # 循环获取用户输入的内容
+
+    echo -e &#39;\033[31m支持单个单词以及常用词组查询,只能英译汉\033[0m&#39;
+
+    while read word
+        do
+            # mac特性 朗读一下内容
+            say $word
+            # 打印提示字符串
+            printf &quot;%s\r&quot; $tip
+            # 带颜色的输出最后的结果
+            echo -e &quot;\033[47;30m $(a $word) \033[0m&quot;
+        done
+</code></pre><p>注释里面已经写得比较清楚，我们在这个shell文件里面把我们的输入原样传给了node脚本，我们来编写这个node脚本。</p>
+<pre class="language-js"><code>    /*
+     * cheerio 重要的node模块，用它来分析抓取到的html文档结构
+     * http 发送网络请求来抓取bing翻译的网页（也就是html文档）
+     * word 获取命令行传过来的查询的单词
+     * searchStr 根据传进来的单词拼接查询字符串
+     * options http模块发送请求的参数
+     * html 抓取到的html文档
+     */
+    var cheerio = require(&#39;cheerio&#39;)
+    var http = require(&#39;http&#39;)
+    // 我们在用bing搜索的时候可以看到词组类型的查询单词间用+号相连
+    // 参数的前两个是系统的默认参数 后面是我们传进来的参数，也就是我们
+    // 想要查询的单词或者是词组，我们将参数用+连接起来
+    var word = process.argv.splice(2).join(&#39;+&#39;)
+    var searchStr = &#39;/dict/search?q=&#39; + word
+    var options = {
+        host: &#39;cn.bing.com&#39;,
+        port: 80,
+        path: searchStr
+    }
+    var html = &#39;&#39;;
+    // 发送get请求
+    http.get(options, function(res) {
+        // 监听data数据流事件 将其拼接到html字符串中
+        res.on(&#39;data&#39;, function(data) {
+            html += data
+        })
+        // 监听end事件来分析完整的html文档
+        res.on(&#39;end&#39;, function() {
+            // load文档 
+            var $ = cheerio.load(html)
+            // 选择器选择出来有用的信息
+            // 用console.log来将内容打印到控制台，然后在shell脚本文件之中就可以接收到该字符串
+            // 因为console.log 实际上是系统的标准输出，所以shell脚本可以捕获到
+            // console.log($(&#39;.qdef ul li .def span&#39;).text())
+            var result = &#39;&#39;
+            var h = $(&#39;.qdef ul li .def span&#39;)
+            for(var i = 0; i &lt; h.length; i++) {
+                result += h[i].children[0].data + &#39;    &#39;
+            }
+            console.log(result)
+            // console.log(h[1].children[0].data)
+        })
+    })
+</code></pre><p>这里用的cheerio模块非常重要，需要用它来解析我们的html文档。官方站点：<a href="https://cheerio.js.org">https://cheerio.js.org</a></p>
+
+      </section>
+    </main>
+    <footer>
+      <p>©️jiangxuan.org Contact me:645762213#qq.com(请把#换成@)</p>
+      <p>至此结束，如果有任何疑问，都可以发邮件给我，知无不言！</p>
+      <p><a href="http://www.miitbeian.gov.cn/">苏ICP备16014895号-3</a></p>
+    </footer>
+  </div>
+  <script src="./prism.js"></script>
+</body>
+</html>

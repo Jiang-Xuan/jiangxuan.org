@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>关于在react中refs是string类型的弃用</title>
+  <title>所有文章</title>
   <link rel="stylesheet" href="./prism.css">
   <style>
     :root {
@@ -172,41 +172,22 @@
       </nav>
     </header>
     <main>
-      <h1>关于在react中refs是string类型的弃用</h1>
+      <h1>所有文章</h1>
       <section>
         
 <ul>
-<li>在eslint中已经对于在<code>refs</code>使用字符串类型的代码进行报错</li>
+<li><a href="./md/react.refs.html">react.refs</a></li>
+<li><a href="./md/sublime中配置ESLint中的问题.html">sublime中配置ESLint中的问题</a></li>
+<li><a href="./md/svg_path中无法使用百分比.html">svg_path中无法使用百分比</a></li>
+<li><a href="./md/vim编辑器.html">vim编辑器</a></li>
+<li><a href="./md/利用wehook来让自己github仓库收到push请求的时候向自己的服务器发送post请求.html">利用wehook来让自己github仓库收到push请求的时候向自己的服务器发送post请求</a></li>
+<li><a href="./md/如何在react元素里面插入html片段.html">如何在react元素里面插入html片段</a></li>
+<li><a href="./md/如何对git的分支重新命名.html">如何对git的分支重新命名</a></li>
+<li><a href="./md/玩代码之在命令行之中查单词.html">玩代码之在命令行之中查单词</a></li>
+<li><a href="./md/玩代码之如何自定义terminal提示符.html">玩代码之如何自定义terminal提示符</a></li>
+<li><a href="./md/玩代码之小问题集锦.html">玩代码之小问题集锦</a></li>
 </ul>
-<p>正确的获取<code>DOM</code>应该使用以下代码： </p>
-<pre class="language-js"><code>  var Hello = React.createClass({
-        componentDidMount: function() {
-          var component = this.hello;
-          // ...do something with component
-        },
-        render() {
-          return &lt;div ref={(c) =&gt; { this.hello = c; }}&gt;Hello, world.&lt;/div&gt;;
-        }
-});
-</code></pre><p>在ref中使用箭头函数的方式来获取<code>DOM</code>，箭头函数的参数<code>c</code>由<code>react</code>负责传入，<code>c</code>就是原生<code>DOM</code>。</p>
-<p>下面的代码将被弃用：</p>
-<pre class="language-js"><code>  var Hello = React.createClass({
-       render: function() {
-            return &lt;div ref=&quot;hello&quot;&gt;Hello, world.&lt;/div&gt;;
-       }
-  });
 
-
-  var Hello = React.createClass({
-        componentDidMount: function() {
-              var component = this.refs.hello;
-          // ...do something with component
-        },
-        render: function() {
-          return &lt;div ref=&quot;hello&quot;&gt;Hello, world.&lt;/div&gt;;
-        }
-  });
-</code></pre>
       </section>
     </main>
     <footer>

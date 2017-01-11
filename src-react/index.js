@@ -227,7 +227,7 @@ class Home extends React.Component {
           </div>
           <div className="shadow startup-inactive" />
         </div>
-        <p id="home"><a href="./md/玩代码之如何自定义terminal提示符.html">Home</a><a href="https://github.com/Jiang-Xuan" rel="noopener noreferrer" target="_blank">Github</a></p>
+        <p id="home"><a href="./home.html">Home</a><a href="https://github.com/Jiang-Xuan" rel="noopener noreferrer" target="_blank">Github</a></p>
         <p>Welcome to Jiang-Xuan blog</p>
         <audio
           src="./source/ambient-loop-piano.mp3"
