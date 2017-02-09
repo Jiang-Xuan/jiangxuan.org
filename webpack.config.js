@@ -70,7 +70,7 @@ var config = {
 			},
 			{
 				test: /\.(less|css)$/,
-				loader: extractLess.extract(['css', 'less', 'postcss'])
+				loader: extractLess.extract(['css', 'less'])
 			},
 			{
 				test: /\.(jpe?g|png|gif|svg)$/i,
@@ -106,18 +106,28 @@ Object.keys(entry).map(function(key){
 });
 
 // -----------------markdown-------------
-if(markdownCompiler !== 'cmarked') {
-	// 设置md文档路径
-	var mdPath = path.resolve(__dirname, 'md-article')
-	var mdOutputPath = path.resolve(__dirname, 'build/md')
-	// 读取markdown入口文件
-	var mdEntry = {}
-	fs.readdirSync(mdPath).map(function(item) {
-		if(/[^(index)]\.md$/.test(item)) {
-			mdEntry[item.replace('.md', '')] = `${mdPath}/${item}`
-		}
-	})
-	Object.keys(mdEntry).map(function(item) {
+// 设置md文档路径
+var mdPath = path.resolve(__dirname, 'md-article')
+var mdOutputPath = path.resolve(__dirname, 'build/md')
+// 读取markdown入口文件
+var mdEntry = {}
+fs.readdirSync(mdPath).map(function(item) {
+	if(/[^(index)]\.md$/.test(item)) {
+		mdEntry[item.replace('.md', '')] = `${mdPath}/${item}`
+	}
+})
+Object.keys(mdEntry).map(function(item) {
+	if(~useCmarkedArticle.indexOf(item)) {
+		console.log(item + ': 该文件使用cmarked个人编译器'.green)
+		config.plugins.push(
+			new customMDtoHTMLUseCmarked({
+				MD: `./md-article/${item}.md`,
+				template: path.resolve(mdPath, 'template.html'),
+				fileoutput: './md/' + item + '.html'
+			})
+		)
+	} else {
+		console.log(item + ': 该文件使用marked第三方编译器'.red)
 		config.plugins.push(
 			new customMDtoHTML({
 				MD: `./md-article/${item}.md`,
@@ -125,40 +135,8 @@ if(markdownCompiler !== 'cmarked') {
 				fileoutput: './md/' + item + '.html'
 			})
 		)
-	})
-} else if(markdownCompiler === 'cmarked') {
-	// 设置md文档路径
-	var mdPath = path.resolve(__dirname, 'md-article')
-	var mdOutputPath = path.resolve(__dirname, 'build/md')
-	// 读取markdown入口文件
-	var mdEntry = {}
-	fs.readdirSync(mdPath).map(function(item) {
-		if(/[^(index)]\.md$/.test(item)) {
-			mdEntry[item.replace('.md', '')] = `${mdPath}/${item}`
-		}
-	})
-	Object.keys(mdEntry).map(function(item) {
-		if(~useCmarkedArticle.indexOf(item)) {
-			console.log(item + ': 该文件使用cmarked个人编译器'.green)
-			config.plugins.push(
-				new customMDtoHTMLUseCmarked({
-					MD: `./md-article/${item}.md`,
-					template: path.resolve(mdPath, 'template.html'),
-					fileoutput: './md/' + item + '.html'
-				})
-			)
-		} else {
-			console.log(item + ': 该文件使用marked第三方编译器'.red)
-			config.plugins.push(
-				new customMDtoHTML({
-					MD: `./md-article/${item}.md`,
-					template: path.resolve(mdPath, 'template.html'),
-					fileoutput: './md/' + item + '.html'
-				})
-			)
-		}
-	})
-}
+	}
+})
 
 
 // 单独生成index索引文件
