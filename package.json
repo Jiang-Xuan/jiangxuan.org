@@ -62,6 +62,7 @@
     "colors": "^1.1.2"
   },
   "use_cmarked_article": [
-    "vim编辑器"
+    "vim编辑器",
+    "站点历程"
   ]
 }
