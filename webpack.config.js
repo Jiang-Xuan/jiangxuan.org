@@ -1,3 +1,5 @@
+'use strict'
+
 var fs = require('fs')
 var webpack = require('webpack')
 var version = require('./package.json').version
@@ -8,8 +10,11 @@ var HtmlWebpackPlugin = require('html-webpack-plugin')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var path = require('path')
 var customMDtoHTML = require('./customMDtoHTML')
+var customMDtoHTMLUseCmarked = require('./customMDtoHTMLUseCmarked')
 
 var evnironment = process.env.NODE_ENV || 'dev'
+// 设置markdown的解析器  现在处于测试个人的markdown编译器期间
+var markdownCompiler = process.env.markdownCompiler || 'marked'
 
 var dev_environment = evnironment.indexOf('dev') !== -1
 
@@ -22,6 +27,11 @@ var distPath = './build'
 var dev_publicPath = null
 
 var extractLess = new ExtractTextPlugin('all.css')
+
+// use cmarked article 
+let useCmarkedArticle = require('./package.json').use_cmarked_article
+let colors = require('colors')
+// 
 
 // 读取js文件作为入口
 var entry = {}
@@ -96,25 +106,61 @@ Object.keys(entry).map(function(key){
 });
 
 // -----------------markdown-------------
-// 设置md文档路径
-var mdPath = path.resolve(__dirname, 'md-article')
-var mdOutputPath = path.resolve(__dirname, 'build/md')
-// 读取markdown入口文件
-var mdEntry = {}
-fs.readdirSync(mdPath).map(function(item) {
-	if(/[^(index)]\.md$/.test(item)) {
-		mdEntry[item.replace('.md', '')] = `${mdPath}/${item}`
-	}
-})
-Object.keys(mdEntry).map(function(item) {
-	config.plugins.push(
-		new customMDtoHTML({
-			MD: `./md-article/${item}.md`,
-			template: path.resolve(mdPath, 'template.html'),
-			fileoutput: './md/' + item + '.html'
-		})
-	)
-})
+if(markdownCompiler !== 'cmarked') {
+	// 设置md文档路径
+	var mdPath = path.resolve(__dirname, 'md-article')
+	var mdOutputPath = path.resolve(__dirname, 'build/md')
+	// 读取markdown入口文件
+	var mdEntry = {}
+	fs.readdirSync(mdPath).map(function(item) {
+		if(/[^(index)]\.md$/.test(item)) {
+			mdEntry[item.replace('.md', '')] = `${mdPath}/${item}`
+		}
+	})
+	Object.keys(mdEntry).map(function(item) {
+		config.plugins.push(
+			new customMDtoHTML({
+				MD: `./md-article/${item}.md`,
+				template: path.resolve(mdPath, 'template.html'),
+				fileoutput: './md/' + item + '.html'
+			})
+		)
+	})
+} else if(markdownCompiler === 'cmarked') {
+	// 设置md文档路径
+	var mdPath = path.resolve(__dirname, 'md-article')
+	var mdOutputPath = path.resolve(__dirname, 'build/md')
+	// 读取markdown入口文件
+	var mdEntry = {}
+	fs.readdirSync(mdPath).map(function(item) {
+		if(/[^(index)]\.md$/.test(item)) {
+			mdEntry[item.replace('.md', '')] = `${mdPath}/${item}`
+		}
+	})
+	Object.keys(mdEntry).map(function(item) {
+		if(~useCmarkedArticle.indexOf(item)) {
+			console.log(item + ': 该文件使用cmarked个人编译器'.green)
+			config.plugins.push(
+				new customMDtoHTMLUseCmarked({
+					MD: `./md-article/${item}.md`,
+					template: path.resolve(mdPath, 'template.html'),
+					fileoutput: './md/' + item + '.html'
+				})
+			)
+		} else {
+			console.log(item + ': 该文件使用marked第三方编译器'.red)
+			config.plugins.push(
+				new customMDtoHTML({
+					MD: `./md-article/${item}.md`,
+					template: path.resolve(mdPath, 'template.html'),
+					fileoutput: './md/' + item + '.html'
+				})
+			)
+		}
+	})
+}
+
+
 // 单独生成index索引文件
 config.plugins.push(
 	new customMDtoHTML({

@@ -4,7 +4,7 @@ var md = fs.readdirSync('./md-article')
 
 md = md.filter((item) => {
 	if(/[^(index)].md$/.test(item)) {
-		console.log(item)
+		// console.log(item)
 		return true
 	}
 })
@@ -24,7 +24,7 @@ fs.writeFile('./md-article/index.md', title + content, 'utf8', (err) => {
 	if(err) {
 		console.log(err)
 	}
-	console.log('写入成功')
+	console.log('索引文件生成成功')
 })
 
 
